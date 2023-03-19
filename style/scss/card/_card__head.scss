@@ -1,0 +1,13 @@
+&--head {
+    background-color: $primary;
+    border-radius: 18px 18px 0 0;
+    
+    &--img {
+        position: relative;
+
+        img {
+            width: 250px;
+            padding: $medium-padding;
+        }
+    }
+}

@@ -1,0 +1,160 @@
+@use '../media_querry' as mq;
+@import '../variables';
+
+$navbar-height: 80px;
+$navbar-bg: $primary-color;
+$navbar-text-color: #fff;
+$navbar-text-color-hover: #fff;
+$navbar-active-color: #007bff;
+$navbar-padding: 1rem;
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: $navbar-height;
+    padding: $navbar-padding;
+    background-color: $navbar-bg;
+    color: $navbar-text-color;
+
+    
+
+    .navbar__logo img {
+        width: 150px;
+        height: auto;
+    }
+
+    .navbar__toggler {
+        display: none;
+
+        @include mq.respond_to('xs') {
+            display: block;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            position: relative;
+            z-index: 1;
+
+            span {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background-color: $navbar-text-color;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+
+                &:before,
+                &:after {
+                    content: "";
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    background-color: $navbar-text-color;
+                    position: absolute;
+                    left: 0;
+                    transition: transform 0.3s ease-in-out;
+                }
+
+                &:before {
+                    transform: translateY(-8px);
+                }
+
+                &:after {
+                    transform: translateY(8px);
+                }
+
+                &.active {
+                    &:before {
+                        transform: rotate(45deg) translate(6px, 6px);
+                    }
+
+                    &:after {
+                        transform: rotate(-45deg) translate(6px, -6px);
+                    }
+                }
+            }
+        }
+    }
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+
+        li {
+            margin-left: $navbar-padding;
+
+            &:first-child {
+                margin-left: 0;
+            }
+
+            a {
+                color: $navbar-text-color;
+                text-decoration: none;
+                padding: $navbar-padding 0;
+
+                &:hover {
+                    color: $navbar-text-color-hover;
+                }
+
+                &.active {
+                    color: $navbar-active-color;
+                }
+            }
+        }
+    }
+}
+
+@include mq.respond_to('xs') {
+    nav {
+        flex-direction: column;
+        height: auto;
+
+        .navbar__toggler {
+            display: block;
+        }
+
+        ul {
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 0;
+            overflow: hidden;
+            transition: height 0.3s ease-in-out;
+
+            &.expanded {
+                height: auto;
+            }
+
+            li {
+                margin: 0;
+
+                &:first-child {
+                    margin-top: $navbar-padding;
+                }
+
+                a {
+                    display: block;
+                    padding: $navbar-padding;
+                    border-top: 1px solid $navbar-text-color;
+
+                    &:hover {
+                        background-color: $navbar-text-color-hover;
+                        color: $navbar-bg;
+                    }
+
+                    &.active {
+                        background-color: $navbar-active-color;
+                        color: $navbar-bg;
+                    }
+                }
+            }
+        }
+    }
+}

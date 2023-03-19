@@ -1,0 +1,57 @@
+@use '../media_querry' as mq;
+@import '../variables';
+
+$primary: #154F78;
+$secondary: #f8f9fa;
+
+$small-padding: 12px;
+$medium-padding: 24px;
+
+$small-font: 18px;
+$medium-font: 28px;
+
+.card {
+    width: auto;
+    height: 100%;
+    margin: 2rem;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    cursor: pointer;
+    position: relative;
+    min-height: 1045px;
+
+    @include mq.respond-to('md', 'lg', 'xl') {
+        min-height: 540px;
+        margin: 4rem;
+    }
+
+    &__face {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+
+        &--front {
+
+            @import 'card__head';
+
+            @import 'card__main';
+
+            @import 'card__foot';
+        }
+
+        &--back {
+            border-radius: 18px;
+            background-color: $primary;
+            transform: rotateY(180deg);
+
+            @include mq.respond-to('md', 'lg', 'xl') {
+                transform: rotateX(180deg);
+            }
+
+            @import 'card__back';
+        }
+    }
+}
+

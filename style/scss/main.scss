@@ -1,0 +1,21 @@
+@use 'nav/nav';
+@use 'form/form';
+@use 'card/card';
+@use './media_querry' as mq;
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+  
+body { font-family: 'Roboto', sans-serif;; }
+
+.card.is-flipped {
+  transform: rotateY(180deg);
+
+  @include mq.respond-to('md', 'lg', 'xl') {
+    transform: rotateX(180deg);  
+  }
+}

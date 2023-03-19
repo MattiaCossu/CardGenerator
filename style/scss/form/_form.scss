@@ -1,0 +1,82 @@
+@use '../media_querry' as mq;
+@import '../variables';
+
+$form-padding: 1rem;
+
+.container {
+    border: 4px solid $primary-color;
+    border-radius: 12px;
+    width: 80%;
+    margin: 24px auto;
+
+    &__head {
+        background-color: $primary-color;
+        padding: $form-padding;
+        color: #fff;
+
+        h2 { 
+            font-weight: 500;
+            line-height: 100%;
+            padding-bottom: 6px;
+            font-size: 2.5rem
+        }
+
+        p {
+            font-weight: 300;
+            font-size: 1rem
+        }
+    }
+
+    &__main {
+        padding: $form-padding;
+
+        form {
+            div {
+                padding-top: 24px;
+            }
+        }
+        
+        label {
+            display: block;
+            font-size: 22px;
+            font-weight: 500;
+        }
+
+        input[type=text], input[type=date] {
+            width: 100%;
+            padding: 0.5rem;
+        }
+
+        select {
+            width: 100%;
+            padding: 0.5rem;
+        }
+        
+        label[for=male], label[for=female] {
+            display: inline-block;
+            margin-right: 20px; 
+        }
+
+        .divider {
+            margin: 12px;
+            display: block;
+            height: 0.5px;
+            background-color: $primary-color;
+        }
+        button {
+            width: 100%;
+            border: none;
+            padding: 12px;
+            border-radius: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            color: $secondary-color;
+            background-color: $accent-color
+        }
+    }
+
+    @include mq.respond-to('md', 'lg', 'xl') {
+        width: 50%;
+    }
+}
