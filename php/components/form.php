@@ -1,6 +1,14 @@
 <?php
 require_once '../class/Student.php';
-require_once '../class/validation/StudentFormValidator.php';
+require_once '../class/validation/FormValidator.php';
+require_once '../class/validation/FormField.php';
+require_once '../class/validation/validator/DateValidator.php';
+require_once '../class/validation/validator/InvalidCharsValidator.php';
+require_once '../class/validation/validator/MaxLengthValidator.php';
+require_once '../class/validation/validator/MinLengthValidator.php';
+require_once '../class/validation/validator/RequiredValidator.php';
+require_once '../class/validation/validator/ChoiceValidator.php';
+
 
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo "<p class='success'>Studente inserito con successo!</p>";
@@ -10,10 +18,49 @@ if (isset($_GET['success']) && $_GET['success'] == 1) {
     exit;
 }
 
+$temp = array();
 if (isset($_POST['SubmitButton'])) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $validator = new StudentFormValidator($_POST);
-        if($validator->validate()) {
+        $formFields = [
+            $firstnameFormField = new FormField(
+                'firstname',
+                [new RequiredValidator(), new InvalidCharsValidator(), new MaxLengthValidator(100), new MinLengthValidator(2)]
+            ),
+            $lastnameFormField = new FormField(
+                'surname',
+                [new RequiredValidator(), new InvalidCharsValidator(), new MaxLengthValidator(100), new MinLengthValidator(2)]
+            ),
+            $dateFormField = new FormField(
+                'date',
+                [new DateValidator()]
+            ),
+            $courseFormField = new FormField(
+                'course',
+                [new ChoiceValidator(['mechatronics', 'information-technology', 'biotechnology', 'food-and-beverage', 'tourism', 'marketing-and-administration', 'construction', 'energy-efficiency'])]
+            ),
+            $genderFormField = new FormField(
+                'gender',
+                [new ChoiceValidator(['male', 'female'])]
+            ),
+            $locationFormField = new FormField(
+                'location',
+                [new ChoiceValidator( ['perugia', 'terni'])]
+            )
+        ];
+
+        $firstnameFormField->setValue($_POST['first-name']);
+        $lastnameFormField->setValue($_POST['last-name']);
+        $dateFormField->setValue($_POST['date-of-birth']);
+        $courseFormField->setValue($_POST['course']);
+        $genderFormField->setValue($_POST['gender']);
+        $locationFormField->setValue($_POST['location']);
+
+        $formValidator = new FormValidator(
+            'student-form',
+            $formFields
+        );
+
+        if($formValidator->validate()) {
             $first_name = $_POST['first-name'];
             $last_name = $_POST['last-name'];
             $date_of_birth = $_POST['date-of-birth'];
@@ -34,9 +81,17 @@ if (isset($_POST['SubmitButton'])) {
                 header('Location: index.php?error=' . urlencode($exception->getMessage()));
             }
         } else {
-            $errors = $validator->getErrors();
-            foreach ($errors as $error) {
-                echo "<p class='error'>$error</p>";
+            foreach ($formValidator->getErrors() as $formField) {
+                ?>
+                <div class="error">
+                <?php
+                echo '<p class="field-name">' . $formField->getName() . '</p>';
+                foreach ($formField->getErrors() as $validator) {
+                    echo '<p>' . $validator->getError() . '</p>';
+                }
+                ?>
+                </div>
+                <?php
             }
         }
     }
