@@ -1,55 +1,40 @@
 <?php
 
-abstract class FormValidator
-{
-    protected $errors = [];
+class FormValidator {
+    private string $name;
+    private array $formFields = [];
+    private array $errors = [];
 
-    abstract public function validate();
+    public function __construct(string $name, array $formFields)
+    {
+        $this->name = $name;
+        $this->formFields = $formFields;
+    }
 
-    public function getErrors()
+    public function addField(FormField $formField): self
+    {
+        $this->formFields[] = $formField;
+
+        return $this;
+    }
+
+    public function getErrors(): array
     {
         return $this->errors;
     }
 
-    protected function addError($field, $message)
+    public function getFields(): array
     {
-        $this->errors[$field] = $message;
+        return $this->formFields;
     }
 
-    protected function validateRequired($field, $value)
+    public function validate(): bool
     {
-        if (empty($value)) {
-            $this->addError($field, "The $field field is required");
+        foreach ($this->formFields as $formField) {
+            if (!$formField->validate()) {
+                $this->errors[] = $formField;
+            }
         }
-    }
-
-    protected function validateMinLength($field, $value, $length)
-    {
-        if (strlen($value) < $length) {
-            $this->addError($field, "The $field field must be at least $length characters long");
-        }
-    }
-
-    protected function validateMaxLength($field, $value, $length)
-    {
-        if (strlen($value) > $length) {
-            $this->addError($field, "The $field field must be no more than $length characters long");
-        }
-    }
-
-    protected function validateDate($field, $value)
-    {
-        $date_parts = explode('-', $value);
-        echo $value;
-        if (count($date_parts) !== 3) {
-            $this->addError($field, "The $field field must be a valid date in the format DD/MM/YYYY");
-            return;
-        }
-        $day = (int) $date_parts[2];
-        $month = (int) $date_parts[1];
-        $year = (int) $date_parts[0];
-        if (!checkdate($month, $day, $year)) {
-            $this->addError($field, "The $field field must be a valid date in the format DD/MM/YYYY");
-        }
+        return count($this->errors) === 0;
     }
 }
