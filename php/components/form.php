@@ -9,6 +9,14 @@ require_once '../class/validation/validator/MinLengthValidator.php';
 require_once '../class/validation/validator/RequiredValidator.php';
 require_once '../class/validation/validator/ChoiceValidator.php';
 
+function printFieldErrors($formValidator, $fieldName) {
+    $errors = $formValidator->getErrorsByField($fieldName);
+    if ($errors) {
+        foreach ($errors as $error) {
+            echo "<div class='error'><p>$error</p></div>";
+        }
+    }
+}
 
 if (isset($_GET['success']) && $_GET['success'] == 1) {
     echo "<p class='success'>Studente inserito con successo!</p>";
@@ -81,7 +89,13 @@ if (isset($_POST['SubmitButton'])) {
                 header('Location: index.php?error=' . urlencode($exception->getMessage()));
             }
         } else {
-            foreach ($formValidator->getErrors() as $formField) {
+            $first_name = $formValidator->getErrorsByField('first-name');
+            $last_name = $formValidator->getErrorsByField('last-name');
+            $date_of_birth = $formValidator->getErrorsByField('date-of-birth');
+            $course = $formValidator->getErrorsByField('course');
+            $gender = $formValidator->getErrorsByField('gender');
+            $location = $formValidator->getErrorsByField('location');
+            /*foreach ($formValidator->getErrors() as $formField) {
                 ?>
                 <div class="error">
                 <?php
@@ -92,7 +106,7 @@ if (isset($_POST['SubmitButton'])) {
                 ?>
                 </div>
                 <?php
-            }
+            }*/
         }
     }
 }
@@ -108,15 +122,30 @@ if (isset($_POST['SubmitButton'])) {
             <div>
                 <label for="first-name">First Name:</label>
                 <input type="text" id="first-name" name="first-name" required>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'firstname');
+                    }
+                ?>
             </div>
             <div>
                 <label for="last-name">Last Name:</label>
                 <input type="text" id="last-name" name="last-name" required>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'lastname');
+                    }
+                ?>
             </div>
 
             <div>
                 <label for="date-of-birth">Date of Birth:</label>
                 <input type="date" id="date-of-birth" name="date-of-birth" required>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'date');
+                    }
+                ?>
             </div>
 
             <div>
@@ -132,6 +161,11 @@ if (isset($_POST['SubmitButton'])) {
                     <option value="construction">Construction</option>
                     <option value="energy-efficiency">Energy Efficiency</option>
                 </select>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'course');
+                    }
+                ?>
             </div>
 
             <div>
@@ -144,6 +178,11 @@ if (isset($_POST['SubmitButton'])) {
                         <input type="radio" id="female" name="gender" value="female" required>Female
                     </label>
                 </div>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'gender');
+                    }
+                ?>
             </div>
 
             <div>
@@ -152,6 +191,11 @@ if (isset($_POST['SubmitButton'])) {
                     <option value="perugia">Perugia</option>
                     <option value="terni">Terni</option>
                 </select>
+                <?php 
+                    if (isset($formValidator)) {
+                        printFieldErrors($formValidator, 'location');
+                    }
+                ?>
             </div>
 
             <span class="divider"></span>

@@ -23,10 +23,19 @@ class FormField {
     }
 
     public function setValue(string $value): self
-    {
+    {           
         $this->value = $value;
 
         return $this;
+    }
+
+    public function getErrorByValidator(): array
+    {
+        $errors = [];
+        foreach ($this->errors as $error) {
+            $errors[] = $error->getError();
+        }
+        return $errors;
     }
 
     public function validate(): bool {

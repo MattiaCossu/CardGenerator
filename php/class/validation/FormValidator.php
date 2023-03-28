@@ -28,6 +28,19 @@ class FormValidator {
         return $this->formFields;
     }
 
+    public function getErrorsByField(string $fieldName): array
+    {
+        $errors = [];
+        foreach ($this->errors as $error) {
+            if ($error->getName() === $fieldName) {
+                foreach ($error->getErrorByValidator() as $error) {
+                    $errors[] = $error;
+                }
+            }
+        }
+        return $errors;
+    }
+
     public function validate(): bool
     {
         foreach ($this->formFields as $formField) {
