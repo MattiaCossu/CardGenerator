@@ -1,25 +1,21 @@
 <?php
 
-class FormField {
+abstract class FormField implements FormFieldInterface 
+{
     private string $name;
     private array $validators;
     private string $value;
     private array $errors = [];
 
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getErrors(): array
-    {
-        return $this->errors;
-    }
-
     public function __construct(string $name, array $validators)
     {
         $this->name = $name;
         $this->validators = $validators;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function setValue(string $value): self
@@ -29,7 +25,12 @@ class FormField {
         return $this;
     }
 
-    public function getErrorByValidator(): array
+    public function getValue(): string
+    {
+        return $this->value;
+    }
+
+    public function getErrors(): array
     {
         $errors = [];
         foreach ($this->errors as $error) {
@@ -38,7 +39,8 @@ class FormField {
         return $errors;
     }
 
-    public function validate(): bool {
+    public function validate(): bool 
+    {
         foreach ($this->validators as $validator) {
             if (!$validator->validate($this->value)) {
                 $this->errors[] = $validator;

@@ -1,7 +1,7 @@
 <?php
 require_once 'Database.php';
 
-class Studente {
+class Student {
     private $db;
 
     public function __construct() {
@@ -9,11 +9,12 @@ class Studente {
         $this->db = $database->getConnection();
     }
 
-    public function insertStudent($first_name, $last_name, $date_of_birth, $course, $gender, $location) {
+    public function insertStudent(array $data): bool
+    {
         try {
             $query = "INSERT INTO students (first_name, last_name, date_of_birth, course, gender, location) VALUES (?, ?, ?, ?, ?, ?)";
             $stmt = $this->db->prepare($query);
-            $stmt->execute([$first_name, $last_name, $date_of_birth, $course, $gender, $location]);
+            $stmt->execute($data);
             return true;
         } catch (PDOException $exception) {
             throw new Exception("Error in entering the student: " . $exception->getMessage());

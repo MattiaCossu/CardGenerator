@@ -18,18 +18,18 @@
     <main>
         <?php
         require_once '../class/Student.php';
-        $studente = new Studente();
+        $student = new Student();
         try {
-            $studenti = $studente->displayStudents();
-            if ($studenti) {
-                foreach ($studenti as $studente) {
-                    $id = $studente['id'];
-                    $name = $studente['first_name'];
-                    $surname = $studente['last_name'];
-                    $date = $studente['date_of_birth'];
-                    $course = $studente['course'];
-                    $gender = $studente['gender'];
-                    $location = $studente['location'];
+            $students = $student->displayStudents();
+            if ($students) {
+                foreach ($students as $student) {
+                    $id = $student['id'];
+                    $name = $student['first_name'];
+                    $surname = $student['last_name'];
+                    $date = $student['date_of_birth'];
+                    $course = $student['course'];
+                    $gender = $student['gender'];
+                    $location = $student['location'];
         
                     include '../components/card.php';
                 }

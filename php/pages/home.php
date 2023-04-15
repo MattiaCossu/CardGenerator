@@ -6,16 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../style/style.css">
     <title>Its Card</title>
-
-    <style>
-        h1 {
-            text-transform: uppercase;
-            font-weight: 500;
-            font-size: 2rem;
-            text-align: center;
-            margin: 16px;
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -23,7 +13,7 @@
     </header>
 
     <main>
-        <h1>Unoficial site for generate Its student card</h1>
+        <h1 class="title">Unoficial site for generate Its student card</h1>
     </main>
 
     <script src="../../js/main.js"></script>

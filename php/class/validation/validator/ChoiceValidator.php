@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . '/../ValidatorInterface.php';
 
 class ChoiceValidator implements ValidatorInterface
 {

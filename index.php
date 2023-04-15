@@ -18,3 +18,4 @@ if (isset($_GET['route'])) {
     header('Location: ./php/pages/home.php');
     exit;
 }
+
